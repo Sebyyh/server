@@ -41,7 +41,7 @@ API_HASH = "2677c9bb89c72714322e46e23ce8da0d"
 Values = {}
 proxyact = True
 if proxyact:
-    with open("C:/Users/CHERRY-PC/Desktop/bottelegram/SpammerBot/tgceo/proxylist.txt", "r") as f:
+    with open("/proxylist.txt", "r") as f:
         Values["proxyes"] = f.readlines()
         Values["proxy"] = 0
 Getter = None
