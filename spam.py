@@ -1,21 +1,23 @@
-import os, json, asyncio
+import os
+import json
+import asyncio
 from telethon import TelegramClient, events, Button
 from telethon.sync import TelegramClient as Testc
 from telethon.errors import PhoneNumberFloodError, SessionPasswordNeededError, FloodWaitError
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.types import InputPeerEmpty
-from telethon.tl.functions.messages import GetDialogsRequest, SendInlineBotResultRequest, GetInlineBotResultsRequest
-from telethon.sessions import StringSession
 from telethon.tl.functions.messages import GetDialogsRequest
-
-import time
+from telethon.sessions import StringSession
 import random
 import pickle
+import time
+
 devices = {0: {"m_name": "Iphone 13", "s_name": "15.1.1", "s_app": "8.1.2"},
            1: {"m_name": "Iphone 12", "s_name": "15.1.1", "s_app": "8.3.1"},
            2: {"m_name": "Iphone 7", "s_name": "14.5.1", "s_app": "6.2.1"},
            3: {"m_name": "Iphone 7", "s_name": "14.5.1", "s_app": "6.0.1"},
            4: {"m_name": "Iphone 6", "s_name": "14.4.2", "s_app": "7.6"}}
+
 if os.path.exists("device.pk"):
     with open("device.pk", "rb") as rrrr:
         try:
@@ -32,18 +34,21 @@ else:
     actualdevice = random.choice(devices)
     with open("device.pk", "wb") as pkw:
         pickle.dump(actualdevice, pkw)
+
 increment = 40
 actual_increment = 0
 ADMIN = 5492201619
-BOT_TOKEN = "7327947594:AAEXqiMQ00lTP7ulzPrjyWl9x88z_Wklpag"
+
 API_KEY = 26483422
 API_HASH = "2677c9bb89c72714322e46e23ce8da0d"
 Values = {}
 proxyact = True
+
 if proxyact:
     with open("proxylist.txt", "r") as f:
         Values["proxyes"] = f.readlines()
         Values["proxy"] = 0
+
 Getter = None
 Number = None
 TempClient = None
@@ -55,9 +60,10 @@ markup = None
 Message = None
 pvtspam = False
 timen = 0
-temp =None
+temp = None
 Joinbool = True
 privatespam = False
+
 if os.path.exists("admins.json"):
     with open("admins.json", "r+") as f:
         admins = json.load(f)
@@ -65,6 +71,7 @@ else:
     admins = {}
     with open("admins.json", "w+") as f:
         json.dump(admins, f)
+
 if os.path.exists("SSs.json"):
     with open("SSs.json", "r+") as f:
         SSs = json.load(f)
@@ -81,24 +88,20 @@ else:
     with open("ArchSSs.json", "w+") as f:
         json.dump(ArchSSs, f)
 
-
 def saveSS():
     global SSs
     with open("SSs.json", "w+") as f:
         json.dump(SSs, f)
-
 
 def saveadmins():
     global admins
     with open("admins.json", "w+") as f:
         json.dump(admins, f)
 
-
 def saveArchSS():
     global ArchSSs
     with open("ArchSSs.json", "w+") as f:
         json.dump(ArchSSs, f)
-
 
 async def getAllChats(chats):
     global VARS, countgruppi
@@ -115,12 +118,20 @@ async def getAllChats(chats):
                 groups.append(i.id)
     return groups
 
-
 contactedusers = []
 groupbanned = []
 
+async def test_proxy(proxy):
+    try:
+        test_client = TelegramClient(None, API_KEY, API_HASH, proxy=("socks5", proxy[0], int(proxy[1])))
+        await test_client.connect()
+        await test_client.disconnect()
+        return True
+    except:
+        return False
+
 async def doSpam(t):
-    global ADMIN, SSs, API_KEY, API_HASH, markup, usernameofbot, contactedusers, tempn2, Values, proxyact,bot, privatespam, groupbanned, actualdevice, increment, actual_increment, incremento_active
+    global ADMIN, SSs, API_KEY, API_HASH, markup, usernameofbot, contactedusers, tempn2, Values, proxyact, bot, privatespam, groupbanned, actualdevice, increment, actual_increment, incremento_active
     banned = []
     contactedusers = []
     for SS in SSs:
@@ -132,8 +143,7 @@ async def doSpam(t):
                 proxy = None
                 try:
                     if temp not in proxyforvoips:
-                        proxyforvoips[SS] = Values["proxyes"][
-                            Values["proxy"]]
+                        proxyforvoips[SS] = Values["proxyes"][Values["proxy"]]
                         if len(Values["proxyes"]) - 2 < Values["proxy"]:
                             Values["proxy"] = 0
                         Values["proxy"] += 1
@@ -141,19 +151,20 @@ async def doSpam(t):
                 except:
                     pass
                 if proxy is not None:
+                    if not await test_proxy(proxy):
+                        continue
                     CClient = Testc(StringSession(SSs[SS]),
                                     API_KEY, API_HASH,
-                                                               device_model=actualdevice["m_name"],
-                                                               system_version=actualdevice["s_name"],
-                                                               app_version=actualdevice["s_app"],
-                                    proxy=("socks5", proxy[0],
-                                           int(proxy[1])))
+                                    device_model=actualdevice["m_name"],
+                                    system_version=actualdevice["s_name"],
+                                    app_version=actualdevice["s_app"],
+                                    proxy=("socks5", proxy[0], int(proxy[1])))
             else:
                 CClient = Testc(StringSession(SSs[SS]), API_KEY,
                                 API_HASH,
-                                                               device_model=actualdevice["m_name"],
-                                                               system_version=actualdevice["s_name"],
-                                                               app_version=actualdevice["s_app"])
+                                device_model=actualdevice["m_name"],
+                                system_version=actualdevice["s_name"],
+                                app_version=actualdevice["s_app"])
             await CClient.connect()
         except:
             pass
@@ -240,7 +251,6 @@ async def doSpam(t):
                     await bot.send_message(ADMIN,
                                            f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
 
-
             else:
                 banned.append(SS)
                 await bot.send_message(ADMIN,
@@ -257,13 +267,12 @@ async def doSpam(t):
                 del (SSs[n])
         saveSS()
 
-
 users = []
 userschats = {}
 bot = TelegramClient('bot3', API_KEY, API_HASH,
-                                                               device_model=actualdevice["m_name"],
-                                                               system_version=actualdevice["s_name"],
-                                                               app_version=actualdevice["s_app"]).start(bot_token=BOT_TOKEN)
+                     device_model=actualdevice["m_name"],
+                     system_version=actualdevice["s_name"],
+                     app_version=actualdevice["s_app"]).start()
 usernameofbot = bot.get_me().username
 voipMessages = {}
 tempn2 = None
@@ -295,7 +304,6 @@ async def MessagesManager(e):
                              [Button.inline("IMPOSTA BOTTONI", "impostabtn")]])
 
         elif Getter is not None:
-
             if Getter == 0:
                 Getter = None
                 if e.text not in SSs:
@@ -638,6 +646,9 @@ async def MessagesManager(e):
                                 Values["proxyes"][Values["proxy"]]
                             )
                         if proxy is not None:
+                            if not await test_proxy(proxy):
+                                await e.respond("**❌ Proxy non funzionante ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "back")]])
+                                continue
                             TempClient = Testc(StringSession(SSs[temp]), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
                                                                system_version=actualdevice["s_name"],
@@ -653,43 +664,43 @@ async def MessagesManager(e):
                         if "t.me/" in group or "telegram.me/" in group or group.startswith("@"):
                             if not " " in group:
                                 if Joinbool:
-                                        try:
-                                            if await TempClient.get_me():
-                                                if Joinbool:
-                                                    i8 = 0
+                                    try:
+                                        if await TempClient.get_me():
+                                            if Joinbool:
+                                                i8 = 0
+                                                try:
+                                                    await TempClient(JoinChannelRequest(group))
+                                                    i8 += 1
+                                                    await asyncio.sleep(470)
+                                                except FloodWaitError as err:
+                                                    timen = time.time() + err.seconds + 230
+                                                    await msg.edit("FloodWait, aspettare " + str(
+                                                        err.seconds + 230) + f" per continuare ad usare il bot.\n\nsono entrato in {i8} gruppi. ",
+                                                                   buttons=[
+                                                                        [Button.inline("❌ INDIETRO ❌",
+                                                                                       "back")], [
+                                                                       Button.inline(
+                                                                               "🔄AGGIORNA🔄",
+                                                                               "updatetime")]])
+                                                    await asyncio.sleep(err.seconds + 230)
                                                     try:
                                                         await TempClient(JoinChannelRequest(group))
                                                         i8 += 1
-                                                        await asyncio.sleep(470)
-                                                    except FloodWaitError as err:
-                                                        timen = time.time() + err.seconds +230
-                                                        await msg.edit("FloodWait, aspettare " + str(
-                                                            err.seconds +230) + f" per continuare ad usare il bot.\n\nsono entrato in {i8} gruppi. ",
-                                                                       buttons=[
-                                                                            [Button.inline("❌ INDIETRO ❌",
-                                                                                       "back")], [
-                                                                           Button.inline(
-                                                                                   "🔄AGGIORNA🔄",
-                                                                                   "updatetime")]])
-                                                        await asyncio.sleep(err.seconds + 230)
-                                                        try:
-                                                            await TempClient(JoinChannelRequest(group))
-                                                            i8 += 1
-                                                        except:
-                                                            pass
-                                                    except Exception as err:
-                                                        print(str(err))
+                                                    except:
                                                         pass
-                                            else:
-                                                await bot.send_message(ADMIN,
-                                                               f"**⚠️ »** __Il VoIP__ `{temp}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
-                                                banned.append(temp)
-                                                await TempClient.disconnect()
-                                        except Exception as EE:
-                                            print(EE)
+                                                except Exception as err:
+                                                    print(str(err))
+                                                    pass
+                                        else:
                                             await bot.send_message(ADMIN,
-                                                            f"**⚠️ »** __Il VoIP__ `{temp}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
+                                                               f"**⚠️ »** __Il VoIP__ `{temp}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
                                             banned.append(temp)
+                                            await TempClient.disconnect()
+                                    except Exception as EE:
+                                        print(EE)
+                                        await bot.send_message(ADMIN,
+                                                        f"**⚠️ »** __Il VoIP__ `{temp}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
+                                        banned.append(temp)
                                 else:
                                     break
                             else:
@@ -727,7 +738,7 @@ async def MessagesManager(e):
 
 @bot.on(events.CallbackQuery())
 async def callbackAIAQuery(e):
-    global ADMIN, Getter, Number, TempClient, API_KEY, API_HASH, ArchSSs, SSs, SpamEnabled, Time, Message, Joinbool, timen, admins, Benvenuto, Message2, users, userschats, countgruppi, pvtspam, Values, proxyact, tempn, privatespam, temp, proxyforvoips, groupbanned, actual_increment,incremento_active
+    global ADMIN, Getter, Number, TempClient, API_KEY, API_HASH, ArchSSs, SSs, SpamEnabled, Time, Message, Joinbool, timen, admins, Benvenuto, Message2, users, userschats, countgruppi, pvtspam, Values, proxyact, tempn, privatespam, temp, proxyforvoips, groupbanned, actual_increment, incremento_active
     if e.is_private:
         if e.sender_id == ADMIN or e.sender_id in admins:
 
