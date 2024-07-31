@@ -6,7 +6,6 @@ from telethon.sync import TelegramClient as Testc
 from telethon.errors import PhoneNumberFloodError, SessionPasswordNeededError, FloodWaitError
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.types import InputPeerEmpty
-from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.sessions import StringSession
 import random
 import pickle
@@ -319,6 +318,7 @@ async def MessagesManager(e):
                                         Values["proxyes"][
                                             Values["proxy"]],
                                         buttons=[[Button.inline("🔙 indietro", "back")]])
+                                    return  # Aggiunto return per fermare l'esecuzione
                                 TempClient = Testc(StringSession(), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
                                                                system_version=actualdevice["s_name"],
@@ -368,10 +368,10 @@ async def MessagesManager(e):
                 except SessionPasswordNeededError:
                     Getter = 2
                     await e.respond("**🔑 Inserisci la Password (2FA) 🔑**",
-                                    buttons=[[Button.inline("❌ Annulla ❌", "voip")]])
+                                    buttons=[[Button.inline("❌ Annulla", "voip")]])
                 except:
                     Getter, Number = None, None
-                    await e.respond("**❌ Codice Errato ❌**", buttons=[[Button.inline("🔄 Riprova 🔄", "addvoip")]])
+                    await e.respond("**❌ Codice Errato ❌", buttons=[[Button.inline("🔄 Riprova 🔄", "addvoip")]])
                     await TempClient.disconnect()
             elif Getter == 2:
                 try:
@@ -383,7 +383,7 @@ async def MessagesManager(e):
                                     buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 except:
                     Getter, Number = None, None
-                    await e.respond("**❌ Password Errata ❌**", buttons=[[Button.inline("🔄 Riprova 🔄", "addvoip")]])
+                    await e.respond("**❌ Password Errata ❌", buttons=[[Button.inline("🔄 Riprova 🔄", "addvoip")]])
                     await TempClient.disconnect()
             elif Getter == 3:
                 Getter = None
@@ -403,7 +403,7 @@ async def MessagesManager(e):
                         [Button.inline("➕ Riaggiungi", "add;" + e.text),
                          Button.inline("Rimuovi ➖", "delarch;" + e.text)], [Button.inline("Join 👥 ", "join;" + e.text)],[Button.inline("🔙 Indietro 🔙", "voip")]])
                 else:
-                    await e.respond("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔄 Riprova 🔄", "voips")]])
+                    await e.respond("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔄 Riprova 🔄", "voips")]])
             elif Getter == 5:
                 if e.text.isnumeric():
                     num = int(e.text)
@@ -622,7 +622,7 @@ async def MessagesManager(e):
                         "**❌ Gruppi non inseriti come testo valido! (usare la sintassi con l'username o con i link (ps: puoi dare una lista al bot e entrerà in automatico)) ❌\n\n🔄 Riprovare 🔄**",
                         buttons=[[Button.inline("❌ Annulla ❌", "back")]])
             elif Getter == 60:
-                if e.text is not None and e.text != "":
+                if e.text is not None e.text != "":
                     groups = e.text.split("\n")
                     Joinbool = True
                     msg = await e.respond(
@@ -648,7 +648,7 @@ async def MessagesManager(e):
                         if proxy is not None:
                             if not await test_proxy(proxy):
                                 await e.respond("**❌ Proxy non funzionante ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "back")]])
-                                continue
+                                return  # Aggiunto return per fermare l'esecuzione
                             TempClient = Testc(StringSession(SSs[temp]), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
                                                                system_version=actualdevice["s_name"],
@@ -724,11 +724,11 @@ async def MessagesManager(e):
         else:
             text1 = e.text.split(" ")
             try:
-                if "/admin" in text1[0] and e.chat_id == ADMIN:
+                if "/admin" in text1[0] e.chat_id == ADMIN:
                     admins[int(text1[1])] = "admin"
                     saveadmins()
                     await e.respond("reso admin " + text1[1])
-                elif "/unadmin" in text1[0] and e.chat_id == ADMIN:
+                elif "/unadmin" in text1[0] e.chat_id == ADMIN:
                     del (admins[int(text1[1])])
                     saveadmins()
                     await e.respond("rimosso admin " + text1[1])
@@ -740,7 +740,7 @@ async def MessagesManager(e):
 async def callbackAIAQuery(e):
     global ADMIN, Getter, Number, TempClient, API_KEY, API_HASH, ArchSSs, SSs, SpamEnabled, Time, Message, Joinbool, timen, admins, Benvenuto, Message2, users, userschats, countgruppi, pvtspam, Values, proxyact, tempn, privatespam, temp, proxyforvoips, groupbanned, actual_increment, incremento_active
     if e.is_private:
-        if e.sender_id == ADMIN or e.sender_id in admins:
+        if e.sender_id == ADMIN o e.sender_id in admins:
 
             if e.data == b"back":
                 Getter = None
@@ -922,7 +922,7 @@ async def callbackAIAQuery(e):
                         await e.edit("**✅ VoIP Archiviato Correttamente ✅**",
                                      buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 elif st[0] == "join":
                     if st[1] in SSs:
                         Getter = 60
@@ -936,7 +936,7 @@ async def callbackAIAQuery(e):
                         await e.edit("__💬 Inviare il messaggio da impostare!__ \nper: " + tempn,
                                      buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 elif st[0] == "msgbtn":
                     if st[1] in SSs:
                         tempn = st[1]
@@ -946,7 +946,7 @@ async def callbackAIAQuery(e):
                             tempn,
                             buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 elif st[0] == "add":
                     if st[1] in ArchSSs:
                         SSs[st[1]] = ArchSSs[st[1]]
@@ -956,7 +956,7 @@ async def callbackAIAQuery(e):
                         await e.edit("**✅ VoIP Riaggiunto Correttamente ✅**",
                                      buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 elif st[0] == "del":
                     if st[1] in SSs:
                         CClient = None
@@ -1003,7 +1003,7 @@ async def callbackAIAQuery(e):
                         await e.edit("**✅ VoIP Rimosso Correttamente ✅**",
                                      buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ VoIP già Rimosso ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ VoIP già Rimosso ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                 elif st[0] == "delarch":
                     if st[1] in ArchSSs:
                         CClient = None
@@ -1050,7 +1050,7 @@ async def callbackAIAQuery(e):
                         await e.edit("**✅ VoIP Rimosso Correttamente ✅**",
                                      buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
                     else:
-                        await e.edit("**❌ Voip già Rimosso ❌**", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
+                        await e.edit("**❌ Voip già Rimosso ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
 
 
 @bot.on(events.InlineQuery)
