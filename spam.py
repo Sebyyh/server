@@ -845,7 +845,7 @@ async def callbackAIAQuery(e):
                             await e.edit("**✅ Spam Avviato Correttamente ✅\nIncremento attuale impostato a : 0**",
                                          buttons=[[Button.inline("🔙 Indietro 🔙", "back")]])
                             while SpamEnabled:
-                                await asyncio.wait([doSpam(e.client)])
+                                await asyncio.wait([asyncio.create_task(doSpam(e.client))])
                                 for i in range(Time * 60):
                                     if SpamEnabled:
                                         await asyncio.sleep(1)
