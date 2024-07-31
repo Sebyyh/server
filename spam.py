@@ -513,7 +513,8 @@ async def MessagesManager(e):
                     Joinbool = True
                     msg = await e.respond(
                         "__⛈ » Accesso ai Gruppi in corso...__\n\n**⚠️ » Questa operazione è pesante e lunga, potrebbero richiedere ore (o giorni)**",
-                        buttons=[[Button.inline("❌ STOP ❌", "stopjoin")]])
+                        buttons=[[Button.inline("❌ STOP ❌", "stopjoin")]]
+                    )
 
                     cannotify = True
                     banned = []
@@ -531,8 +532,7 @@ async def MessagesManager(e):
                                                             proxy = None
                                                             try:
                                                                 if temp not in proxyforvoips:
-                                                                    proxyforvoips[SS] = Values["proxyes"][
-                                                                        Values["proxy"]]
+                                                                    proxyforvoips[SS] = Values["proxyes"][Values["proxy"]]
                                                                     if len(Values["proxyes"]) - 2 < Values["proxy"]:
                                                                         Values["proxy"] = 0
                                                                     Values["proxy"] += 1
@@ -544,18 +544,17 @@ async def MessagesManager(e):
                                                                 )
                                                             if proxy is not None:
                                                                 CClient = Testc(StringSession(SSs[SS]),
-                                                                                            API_KEY, API_HASH,
-                                                               device_model=actualdevice["m_name"],
-                                                               system_version=actualdevice["s_name"],
-                                                               app_version=actualdevice["s_app"],
-                                                                                            proxy=("socks5", proxy[0],
-                                                                                                   int(proxy[1])))
+                                                                                API_KEY, API_HASH,
+                                                                                device_model=actualdevice["m_name"],
+                                                                                system_version=actualdevice["s_name"],
+                                                                                app_version=actualdevice["s_app"],
+                                                                                proxy=("socks5", proxy[0], int(proxy[1])))
                                                         else:
                                                             CClient = Testc(StringSession(SSs[SS]), API_KEY,
-                                                                                        API_HASH,
-                                                               device_model=actualdevice["m_name"],
-                                                               system_version=actualdevice["s_name"],
-                                                               app_version=actualdevice["s_app"])
+                                                                            API_HASH,
+                                                                            device_model=actualdevice["m_name"],
+                                                                            system_version=actualdevice["s_name"],
+                                                                            app_version=actualdevice["s_app"])
                                                         await CClient.connect()
                                                     except:
                                                         pass
@@ -567,15 +566,15 @@ async def MessagesManager(e):
                                                                 i8 += 1
                                                                 await asyncio.sleep(247)
                                                             except FloodWaitError as err:
-                                                                timen = time.time() + err.seconds +200
+                                                                timen = time.time() + err.seconds + 200
                                                                 await msg.edit("FloodWait, aspettare " + str(
-                                                                    err.seconds +200) + f" per continuare ad usare il bot.\n\nsono entrato in {i8} gruppi. ",
-                                                                               buttons=[
-                                                                                   [Button.inline("❌ INDIETRO ❌",
-                                                                                                  "back")], [
-                                                                                       Button.inline(
-                                                                                           "🔄AGGIORNA🔄",
-                                                                                           "updatetime")]])
+                                                                    err.seconds + 200) + f" per continuare ad usare il bot.\n\nsono entrato in {i8} gruppi. ",
+                                                                            buttons=[
+                                                                                [Button.inline("❌ INDIETRO ❌",
+                                                                                                "back")], [
+                                                                                    Button.inline(
+                                                                                        "🔄AGGIORNA🔄",
+                                                                                        "updatetime")]])
                                                                 await asyncio.sleep(err.seconds + 200)
                                                                 try:
                                                                     await CClient(JoinChannelRequest(group))
@@ -587,14 +586,14 @@ async def MessagesManager(e):
                                                                 pass
                                                     else:
                                                         await bot.send_message(ADMIN,
-                                                                               f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
+                                                                            f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
                                                         banned.append(SS)
                                                     await CClient.disconnect()
                                                 else:
                                                     break
                                             except:
                                                 await bot.send_message(ADMIN,
-                                                                       f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
+                                                                    f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
                                                 banned.append(SS)
                                         if len(banned) > 0:
                                             for n in banned:
@@ -612,11 +611,11 @@ async def MessagesManager(e):
                     else:
                         cannotify = False
                         await msg.edit("**❌ Non hai aggiunto nessun VoIP ❌**",
-                                       buttons=[[Button.inline("➕ Aggiungi ➕", "addvoip")],
+                                    buttons=[[Button.inline("➕ Aggiungi ➕", "addvoip")],
                                                 [Button.inline("🔙 Indietro 🔙", "back")]])
                     if cannotify:
                         await msg.edit("**✅ Accesso ai Gruppi Terminato✅**",
-                                       buttons=[[Button.inline("🔙 Indietro 🔙", "back")]])
+                                    buttons=[[Button.inline("🔙 Indietro 🔙", "back")]])
                 else:
                     await e.respond(
                         "**❌ Gruppi non inseriti come testo valido! (usare la sintassi con l'username o con i link (ps: puoi dare una lista al bot e entrerà in automatico)) ❌\n\n🔄 Riprovare 🔄**",
