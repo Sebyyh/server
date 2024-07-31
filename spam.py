@@ -38,7 +38,7 @@ else:
 increment = 40
 actual_increment = 0
 ADMIN = 5492201619
-
+BOT_TOKEN = '7327947594:AAEXqiMQ00lTP7ulzPrjyWl9x88z_Wklpag'
 API_KEY = 26483422
 API_HASH = "2677c9bb89c72714322e46e23ce8da0d"
 Values = {}
@@ -272,7 +272,7 @@ userschats = {}
 bot = TelegramClient('bot3', API_KEY, API_HASH,
                      device_model=actualdevice["m_name"],
                      system_version=actualdevice["s_name"],
-                     app_version=actualdevice["s_app"]).start()
+                     app_version=actualdevice["s_app"]).start(bot_token=BOT_TOKEN)
 usernameofbot = bot.get_me().username
 voipMessages = {}
 tempn2 = None
