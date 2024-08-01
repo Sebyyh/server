@@ -323,7 +323,7 @@ async def MessagesManager(e):
                                                                device_model=actualdevice["m_name"],
                                                                system_version=actualdevice["s_name"],
                                                                app_version=actualdevice["s_app"],
-                                                               proxy=("socks5", proxy[0], int(proxy[1])))
+                                                               proxy=("http", proxy[0], int(proxy[1])))
                             else:
                                 TempClient = Testc(StringSession(), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
@@ -621,7 +621,7 @@ async def MessagesManager(e):
                         "**❌ Gruppi non inseriti come testo valido! (usare la sintassi con l'username o con i link (ps: puoi dare una lista al bot e entrerà in automatico)) ❌\n\n🔄 Riprovare 🔄**",
                         buttons=[[Button.inline("❌ Annulla ❌", "back")]])
             elif Getter == 60:
-                if e.text is not None e.text != "":
+                if e.text is not None and e.text != "":
                     groups = e.text.split("\n")
                     Joinbool = True
                     msg = await e.respond(
