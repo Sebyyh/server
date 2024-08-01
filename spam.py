@@ -223,8 +223,7 @@ async def doSpam(t):
                                             else:
                                                 await CClient.send_message(utente, voipMessages[SS]["Message"][0],
                                                                            file=voipMessages[SS]["Message"][1],
-                                                                           link_preview=voipMessages[SS]["Message"][
-                                                                               2])
+                                                                           link_preview=voipMessages[SS]["Message"][2])
                                                 await asyncio.sleep(22)
                                         i7 += 1
                                     except FloodWaitError as err:
@@ -246,7 +245,7 @@ async def doSpam(t):
                 except Exception as E:
                     print(E)
                     banned.append(SS)
-                    actual_increment += increment *3
+                    actual_increment += increment * 3
                     await bot.send_message(ADMIN,
                                            f"**⚠️ »** __Il VoIP__ `{SS}` __potrebbe essere stato bannato da Telegram! Se l'hai solo disconnesso o cambiato proxy, riaggiungilo.__")
 
@@ -315,15 +314,14 @@ async def MessagesManager(e):
                                 except:
                                     await e.respond(
                                         "I proxy devono essere SERVER:PORTA\n\nproxy non valido!" +
-                                        Values["proxyes"][
-                                            Values["proxy"]],
+                                        Values["proxyes"][Values["proxy"]],
                                         buttons=[[Button.inline("🔙 indietro", "back")]])
                                     return  # Aggiunto return per fermare l'esecuzione
                                 TempClient = Testc(StringSession(), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
                                                                system_version=actualdevice["s_name"],
                                                                app_version=actualdevice["s_app"],
-                                                               proxy=("http", proxy[0], int(proxy[1])))
+                                                               proxy=("socks5", proxy[0], int(proxy[1])))
                             else:
                                 TempClient = Testc(StringSession(), API_KEY, API_HASH,
                                                                device_model=actualdevice["m_name"],
@@ -395,7 +393,7 @@ async def MessagesManager(e):
                                               Button.inline("Rimuovi ➖", "del;" + e.text)], [Button.inline("Join 👥 ", "join;" + e.text)],
                                              [Button.inline("🔙 Indietro 🔙", "voip")]])
                 else:
-                    await e.respond("**❌ VoIP non Trovato ❌**", buttons=[[Button.inline("🔄 Riprova 🔄", "voips")]])
+                    await e.respond("**❌ VoIP non Trovato ❌", buttons=[[Button.inline("🔄 Riprova 🔄", "voips")]])
             elif Getter == 4:
                 Getter = None
                 if e.text in ArchSSs:
@@ -723,23 +721,22 @@ async def MessagesManager(e):
         else:
             text1 = e.text.split(" ")
             try:
-                if "/admin" in text1[0] e.chat_id == ADMIN:
+                if "/admin" in text1[0] and e.chat_id == ADMIN:
                     admins[int(text1[1])] = "admin"
                     saveadmins()
                     await e.respond("reso admin " + text1[1])
-                elif "/unadmin" in text1[0] e.chat_id == ADMIN:
+                elif "/unadmin" in text1[0] and e.chat_id == ADMIN:
                     del (admins[int(text1[1])])
                     saveadmins()
                     await e.respond("rimosso admin " + text1[1])
             except Exception as e4:
                 print(str(e4))
 
-
 @bot.on(events.CallbackQuery())
 async def callbackAIAQuery(e):
     global ADMIN, Getter, Number, TempClient, API_KEY, API_HASH, ArchSSs, SSs, SpamEnabled, Time, Message, Joinbool, timen, admins, Benvenuto, Message2, users, userschats, countgruppi, pvtspam, Values, proxyact, tempn, privatespam, temp, proxyforvoips, groupbanned, actual_increment, incremento_active
     if e.is_private:
-        if e.sender_id == ADMIN o e.sender_id in admins:
+        if e.sender_id == ADMIN or e.sender_id in admins:
 
             if e.data == b"back":
                 Getter = None
@@ -1051,7 +1048,6 @@ async def callbackAIAQuery(e):
                     else:
                         await e.edit("**❌ Voip già Rimosso ❌", buttons=[[Button.inline("🔙 Indietro 🔙", "voip")]])
 
-
 @bot.on(events.InlineQuery)
 async def h3(event):
     global voipMessages, markup, tempn2
@@ -1076,6 +1072,5 @@ async def h3(event):
 
     except Exception as e6:
         print(str(e6))
-
 
 bot.run_until_disconnected()
